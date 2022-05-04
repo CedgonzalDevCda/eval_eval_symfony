@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BrandController{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {#        <h1 class="mt-5 text-center">Liste des annonces de la marque "{{ brand }}"</h1> #}
+        <a href="{{ path('home') }}">back to home</a>
+        <div class="row justify-content-center gap-5 ">
+            {% for annonce in annonces %}
+                {% if annonce.brand == brand %}
+                    <div class="col-3 mt-5 card rounded-3 align-center">
+                        <div class=" card-body">
+                            <h5 class="card-title fw-bold">{{ annonce.title }}</h5>
+                            <p class="card-text"><span class="fw-bold">Description:</span> {{ annonce.description }}</p>
+                            <p class="card-text"><span class="fw-bold">Modèle:</span> {{ annonce.model }}</p>
+                            <p class="card-text"><span class="fw-bold">Marque:</span> {{ annonce.brand }}</p>
+                            <p class="card-text"><span class="fw-bold">Prix:</span> {{ annonce.price }}</p>
+                            <p class="card-text"><span class="fw-bold">Kilomètres:</span> {{ annonce.kilometers }}</p>
+                            <p class="card-text"><span
+                                        class="fw-bold">Année:</span> {{ annonce.year ? annonce.year|date('Y') : '' }}
+                            </p>
+                            <p class="card-text"><span class="fw-bold">Carburant:</span> {{ annonce.fuel }}</p>
+                            <p class="card-text"><span
+                                        class="fw-bold">Permis:</span> {{ annonce.drivinglicence ? 'Oui' : 'Non' }}</p>
+                            <div class="row justify-content-center gap-3">
+                                <div class="col-3">
+                                    <a href="{{ path('app_annonce_show', {'id': annonce.id}) }}"
+                                       class="btn btn-primary">Voir</a>
+                                </div>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <div class="col-3">
+                                        <a href="{{ path('app_annonce_edit', {'id': annonce.id}) }}"
+                                           class="btn btn-secondary">Edit</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

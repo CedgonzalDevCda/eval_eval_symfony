@@ -40,6 +40,9 @@ class Annonce
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $photo;
 
+    #[ORM\Column(type: 'integer')]
+    private $kilometers;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -149,6 +152,18 @@ class Annonce
     public function setPhoto(?string $photo): self
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getKilometers(): ?int
+    {
+        return $this->kilometers;
+    }
+
+    public function setKilometers(int $kilometers): self
+    {
+        $this->kilometers = $kilometers;
 
         return $this;
     }
