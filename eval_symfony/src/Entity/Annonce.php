@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AnnonceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AnnonceRepository::class)]
@@ -42,6 +44,14 @@ class Annonce
 
     #[ORM\Column(type: 'integer')]
     private $kilometers;
+
+    #[ORM\OneToMany(mappedBy: 'annonces', targetEntity: UserListByAnnonce::class)]
+    private $userListByAnnonces;
+
+    public function __construct()
+    {
+        $this->userListByAnnonces = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -166,5 +176,42 @@ class Annonce
         $this->kilometers = $kilometers;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, UserListByAnnonce>
+     */
+    public function getUserListByAnnonces(): Collection
+    {
+        return $this->userListByAnnonces;
+    }
+
+    public function addUserListByAnnonce(UserListByAnnonce $userListByAnnonce): self
+    {
+        if (!$this->userListByAnnonces->contains($userListByAnnonce)) {
+            $this->userListByAnnonces[] = $userListByAnnonce;
+            $userListByAnnonce->setAnnonces($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserListByAnnonce(UserListByAnnonce $userListByAnnonce): self
+    {
+        if ($this->userListByAnnonces->removeElement($userListByAnnonce)) {
+            // set the owning side to null (unless already changed)
+            if ($userListByAnnonce->getAnnonces() === $this) {
+                $userListByAnnonce->setAnnonces(null);
+            }
+        }
+
+        return $this;
+    }
+    public function isUserSignedFavorite (User $user):bool
+    {
+        foreach($this->userListByAnnonces as $userListByAnnonce){
+            if($userListByAnnonce->getUsers() === $user) return true;
+        }
+        return false;
     }
 }
