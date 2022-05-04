@@ -31,33 +31,37 @@
                 <div class="col-3 mt card rounded-3 align-center">
                     <div class=" card-body">
                         <h5 class="card-title fw-bold">{{ annonce.title }}</h5>
-                        <p class="card-text"><span class="fw-bold">Description:</span> {{ annonce.description }}</p>
-                        <p class="card-text"><span class="fw-bold">Modèle:</span> {{ annonce.model }}</p>
-                        <p class="card-text"><span class="fw-bold">Marque:</span> {{ annonce.brand }}</p>
+{#                        <p class="card-text"><span class="fw-bold">Description:</span> {{ annonce.description }}</p>#}
+{#                        <p class="card-text"><span class="fw-bold">Modèle:</span> {{ annonce.model }}</p>#}
+{#                        <p class="card-text"><span class="fw-bold">Marque:</span> {{ annonce.brand }}</p>#}
                         <p class="card-text"><span class="fw-bold">Prix:</span> {{ annonce.price }}</p>
-                        <p class="card-text"><span class="fw-bold">Kilomètres:</span> {{ annonce.kilometers }}</p>
+{#                        <p class="card-text"><span class="fw-bold">Kilomètres:</span> {{ annonce.kilometers }}</p>#}
                         <p class="card-text"><span
                                     class="fw-bold">Année:</span> {{ annonce.year ? annonce.year|date('Y') : '' }}</p>
                         <p class="card-text"><span class="fw-bold">Carburant:</span> {{ annonce.fuel }}</p>
-                        <p class="card-text"><span
-                                    class="fw-bold">Permis:</span> {{ annonce.drivinglicence ? 'Oui' : 'Non' }}</p>
-                        <div class="row justify-content-center gap-3">
+{#                        <p class="card-text"><span#}
+{#                                    class="fw-bold">Permis:</span> {{ annonce.drivinglicence ? 'Oui' : 'Non' }}</p>#}
+                        <div class="row justify-content-center gap-1">
 
                             <div class="col-3">
                                 <a href="{{ path('app_annonce_show', {'id': annonce.id}) }}" class="btn btn-primary">Voir</a>
                             </div>
-                            {% if is_granted('ROLE_USER') %}
-                                {% if annonce.isUserSignedFavorite(app.user) == false%}
-                                    <a href="{{ path('app_annonce_favorite', {id: annonce.id}) }}" class="btn btn-outline-success">Ajouter en favori</a>
-                                {% else %}
-                                    <a href="{{ path('app_annonce_favorite', {id: annonce.id}) }}" class="btn btn-outline-danger">Supprimer des favoris</a>
-                                {% endif %}
-                            {% endif %}
                             {% if is_granted('ROLE_ADMIN') %}
                                 <div class="col-3">
                                     <a href="{{ path('app_annonce_edit', {'id': annonce.id}) }}"
                                        class="btn btn-secondary">Edit</a>
                                 </div>
+                            {% endif %}
+                            {% if is_granted('ROLE_USER') %}
+                                {% if annonce.isUserSignedFavorite(app.user) == false%}
+                                    <div class="col-8">
+                                        <a href="{{ path('app_annonce_favorite', {id: annonce.id}) }}" class="btn btn-outline-success">Ajouter en favori</a>
+                                    </div>
+                                {% else %}
+                                    <div class="ms-2 col-9">
+                                        <a href="{{ path('app_annonce_favorite', {id: annonce.id}) }}" class="btn btn-outline-danger">Supprimer des favoris</a>
+                                    </div>
+                                {% endif %}
                             {% endif %}
                         </div>
                     </div>
